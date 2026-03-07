@@ -11,12 +11,15 @@ final class ConectorService
 
     public function __construct()
     {
-        $this->urlApi = env('LICENSYS_API_URL', 'http://127.0.0.1:9000/api/');
-        $this->apiKey = env('LICENSYS_API_KEY','teste');
+        $this->urlApi = config('licensys_api.api_url');
+        $this->apiKey = config('licensys_api.api_key_crypt');
     }
 
     public function getUrlApi(): string
     {
+        if(empty($this->urlApi)){
+            throw new \Exception("API URL not set.");
+        }
         return $this->urlApi;
     }
 
@@ -31,33 +34,40 @@ final class ConectorService
 
     public function getApiKey(): string
     {
+        if(empty($this->apiKey)){
+            throw new \Exception("API Key not set.");
+        }
         return $this->apiKey;
     }
 
-    public function setApiKey(string $apiKey): void
+    public function setApiKey(string $apiKey, bool $overwrite = false): void
     {
-        $this->apiKey = $apiKey;
+        if (!empty($this->apiKey) && $overwrite === true) {
+            $this->apiKey = $apiKey;
+        } else if (empty($this->apiKey)) {
+            $this->apiKey = $apiKey;
+        }
     }
 
     public function checkUrl(): bool
     {
         $headers = true;
         try {
-            get_headers($this->urlApi . 'check-api');
+            get_headers($this->getUrlApi() . 'check-api');
         } catch (\Throwable $th) {
             $headers = false;
         }
         return $headers;
     }
 
-    public function connect()
+    public function connect(string $uuid)
     {
-        if ($this->checkUrl() === true) {
-            $response = Http::get("{$this->urlApi}connect");
-            //enviar para conexao, com chave de api, uuid
-            //retornar token
-            // Lógica de conexão com a API LicenSys
-            ds($response->json());
+        if ($this->checkUrl() === true && !empty($uuid)) {
+            $response = Http::post($this->getUrlApi()."connect", [
+                'uuid' => $uuid,
+                'api_key_crypt' => $this->getApiKey(),
+            ]);
+            return $response->json();
         }
     }
 }
