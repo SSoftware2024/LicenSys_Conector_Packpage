@@ -25,4 +25,13 @@ final class TransferService
         ]); 
         return $response->successful()?$response->json():$response->body();
     }
+
+    public function getQrCodePix(int $historic_company_id)
+    {
+        $http = $this->httpLicenSys->getHttpWithHeaders();
+        $response = $http->get('transfer/getQrCodePix',[
+            'historic_company_id' => $historic_company_id,
+        ]);
+        return $response->json();
+    }
 }
