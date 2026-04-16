@@ -7,9 +7,9 @@ use TiagoAlves\LicenSysConectorPackpage\Utils\LicenSysHttpUtils;
 final class TransferService
 {
     private LicenSysHttpUtils $httpLicenSys;
-    public function __construct()
+    public function __construct(string $bearerToken)
     {
-        $this->httpLicenSys = new LicenSysHttpUtils('1|kOU9ETzGcIYSIPnLdzerPUVnULw9sU2rWiqw8DB5d6ea678b');
+        $this->httpLicenSys = new LicenSysHttpUtils($bearerToken);
     }
     public function send($company_uuid, $historic_company_id, $pix_origin_name, $file) 
     {
