@@ -62,6 +62,7 @@ final class ConectorService
 
     public function connect(string $uuid)
     {
+        //fazer validação de token expirado
         if ($this->checkUrl() === true && !empty($uuid)) {
             $response = Http::post($this->getUrlApi()."connect", [
                 'uuid' => $uuid,
