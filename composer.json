@@ -1,0 +1,16 @@
+{
+    "name": "tiago_alves/licen-sys_conector_packpage",
+    "description": "Metodos e controle de conexão com gerenciador de licenças LicenSys",
+    "autoload": {
+        "psr-4": {
+            "TiagoAlves\\LicenSysConectorPackpage\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Soluções Software",
+            "email": "ssolucoessoftware@gmail.com"
+        }
+    ],
+    "require": {}
+}
