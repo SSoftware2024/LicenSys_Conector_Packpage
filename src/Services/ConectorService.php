@@ -71,4 +71,15 @@ final class ConectorService
             return $response->json();
         }
     }
+    public function revokeMyTokens(string $uuid)
+    {
+        //fazer validação de token expirado
+        if ($this->checkUrl() === true && !empty($uuid)) {
+            $response = Http::post($this->getUrlApi()."revokeMyTokens", [
+                'uuid' => $uuid,
+                'api_key_crypt' => $this->getApiKey(),
+            ]);
+            return $response->json();
+        }
+    }
 }
